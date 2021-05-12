@@ -149,6 +149,12 @@ class Validate
     protected $scene = [];
 
     /**
+     * 验证失败的字段
+     * @var string
+     */
+    protected $errorKey = '';
+
+    /**
      * 验证失败错误信息
      * @var array
      */
@@ -450,6 +456,7 @@ class Validate
                     }
                 } else {
                     $this->error = $result;
+                    $this->errorKey = $key;
                     return false;
                 }
             }
@@ -1421,6 +1428,15 @@ class Validate
     }
 
     /**
+     * 获取错误字段
+     * @return string
+     */
+    public function getErrorKey()
+    {
+        return $this->errorKey;
+    }
+
+    /**
      * 获取数据值
      * @access protected
      * @param  array     $data  数据
@@ -1494,7 +1510,8 @@ class Validate
             $msg = str_replace(
                 [':attribute', ':1', ':2', ':3'],
                 [$title, $array[0], $array[1], $array[2]],
-                $msg);
+                $msg
+            );
             if (strpos($msg, ':rule')) {
                 $msg = str_replace(':rule', (string) $rule, $msg);
             }
